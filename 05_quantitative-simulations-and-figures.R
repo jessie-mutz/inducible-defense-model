@@ -3,7 +3,7 @@
 ## JM, Last updated 2024-01-04
 
 # Source model functions for model simulations.
-source("./inducible-defense-model/01_model-functions.R")
+source("./inducible-defense-model-v0/01_model-functions.R")
 
 # Load required packages.
 require(ggplot2)

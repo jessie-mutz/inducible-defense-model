@@ -17,7 +17,7 @@ require(ggtext)
 
 # Load output from qualitative simulations for low mature plant mortality (m)/
 #  low seedling maturation rate (g) scenario.
-load("./inducible-defense-model/07_qualitative-output-lowm-lowg.RData")
+load("./inducible-defense-model-v0/07_qualitative-output-lowm-lowg.RData")
 
 # View qualitative behavior (tau x epsilon) from raw simulation output.
 ggplot(data = tau_ep_out[["baseline"]]) +
@@ -118,7 +118,7 @@ for (i in 2:length(colnames(m_bounds_lowg))) {
 
 # Load output from qualitative simulations for low mature plant mortality (m)/
 #  moderate seedling maturation rate (g) scenario.
-load("./inducible-defense-model/09_qualitative-output-lowm-modg.RData")
+load("./inducible-defense-model-v0/09_qualitative-output-lowm-modg.RData")
 
 # View qualitative behavior (tau x m) from raw simulation output.
 ggplot(data = tau_m_out[["baseline"]]) +

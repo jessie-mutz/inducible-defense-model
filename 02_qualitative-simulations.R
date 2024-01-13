@@ -3,7 +3,7 @@
 ## JM, Last updated 2024-01-13
 
 # Source model functions for model simulations.
-source("./inducible-defense-model/01_model-functions.R")
+source("./inducible-defense-model-v0/01_model-functions.R")
 
 # Because the same set of qualitative simulations is desired for multiple plant 
 #  demography scenarios, specify a function for simulating:
