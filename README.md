@@ -15,7 +15,7 @@ This work was funded by USDA-NIFA Award 2021-67034-35232.
 
 ## ACCESS INFORMATION 
 1. Licenses/restrictions placed on the code: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
-2. The repository is available at: [http://doi.org/10.5281/zenodo.10501288] (http://doi.org/10.5281/zenodo.10501288).
+2. The repository is available at: [http://doi.org/10.5281/zenodo.10501111] (http://doi.org/10.5281/zenodo.10501111).
 
 ## OVERVIEW OF SUPPLEMENTAL CODE AND SIMULATION OUTPUT  
 This data repository consists of 3 code scripts (.R), 6 output files (.csv), and this README document.
