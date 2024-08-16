@@ -18,11 +18,11 @@ This work was funded by USDA-NIFA Award 2021-67034-35232.
 2. The repository is available at: [http://doi.org/10.5281/zenodo.10501288] (http://doi.org/10.5281/zenodo.10501288).
 
 ## OVERVIEW OF SUPPLEMENTAL CODE AND SIMULATION OUTPUT  
-This data repository consists of 3 code scripts (.R), 6 data files (.csv), and this README document.
+This data repository consists of 3 code scripts (.R), 6 output files (.csv), and this README document.
 
 ### R scripts
 1. **01_model-functions.R**  
-The code in this script file: (i) defines the full ODE model as described in Table 2; (ii) defines function 'funcy' to simulate equilibrium dynamics across combinations of three parameters.
+The code in this script file: (i) defines the full rescaled ODE model as described in Table 2; (ii) defines function 'funcy' to simulate equilibrium dynamics across combinations of three parameters.
 
 2. **02_simulations.R**  
 The code in this script file: (i) samples random values of seedling maturation rate (g) and reproductive plant mortality rate (m) to use in simulations;  (ii) defines function 'sim_func' for running simulations across values of inducible defense responsiveness (tau), inducible defense cost (theta), and inducible defense effectiveness (epsilon); (iii) simulates the model to determine qualitative and quantitative behavior at equilibrium for various life history scenarios (NOT RUN -- output provided in R Workspace files 04-XX described below).
@@ -31,19 +31,19 @@ The code in this script file: (i) samples random values of seedling maturation r
 The code in this script file reproduces Figs 1-4 from the main text.
 
 ### CSV files
-1. **04_tau-theta-ep27-qual.csv**
+1. **01_tau-theta-ep27-qual.csv**
 This file contains qualitative simulation output across values of inducible defense responsiveness (tau) and inducible defense costs (theta) for 500 plant life history scenarios (i.e., combination of seedling maturation rate [g] and reproductive plant mortality rate [m]).
 
-2. **05_tau0.8-theta-ep-qual.csv**
+2. **02_tau0.8-theta-ep-qual.csv**
 This file contains qualitative simulation output across values of inducible defense costs (theta) and inducible defense efficacy (epsilon) for 500 plant life history scenarios (i.e., combination of seedling maturation rate [g] and reproductive plant mortality rate [m]).
 
-3. **06_tau0.8-theta4-ep-g0.955-qual.csv**
+3. **03_tau0.8-theta4-ep-g0.955-qual.csv**
 This file contains qualitative simulation output across values of inducible defense efficacy (epsilon) at increased seedling maturation rate (g = 0.955) for 500 plant life history scenarios.
 
-4. **07_tau-theta-ep27-r8-qual.csv**
+4. **04_tau-theta-ep27-r8-qual.csv**
 This file contains qualitative simulation output across values of inducible defense responsiveness (tau) and inducible defense costs (theta) at high herbivore intrinsic growth rate (r = 8) for 500 plant life history scenarios (i.e., combination of seedling maturation rate [g] and reproductive plant mortality rate [m]).
 
-The above data files (04-07) have the following structure:
+The above output files (01-04) have the following structure:
 (For detail on behavior diagnostics, e.g., 'pos', 'pt.eq', 'cyc1', see 'funcy' function in 01_model-functions.R)
 
 | Column name | Description |   
@@ -58,13 +58,13 @@ The above data files (04-07) have the following structure:
 | S.NA, P.NA, I_s.NA, I_p.NA, I_s.NA, H.NA | binary factor indicating that NAs occur during simulation |
 | qual | factor summarizing behavior of all state variables at equilibrium: 'extinct', 'pos.pt.eq' (positive point equilibrium), 'cycles', 'unk' (unknown -- output contains NAs) |
 
-5. **08_tau-theta-ep-quan.csv**
+5. **05_tau-theta-ep-quan.csv**
 This file contains quantitative simulation output across values of inducible defense responsiveness (tau), inducible defense costs (theta), and inducible defense efficacy (epsilon) for 4 representative plant life history scenarios (i.e., combination of seedling maturation rate [g] and reproductive plant mortality rate [m]).
 
-6. **09_taus-taup-theta1.5-ep30-quan.csv**
+6. **06_taus-taup-theta1.5-ep30-quan.csv**
 This file contains quantitative simulation output across values of inducible defense responsiveness of seedlings (tau_s) and reproductive plants (tau_p) for 4 representative plant life history scenarios (i.e., combination of seedling maturation rate [g] and reproductive plant mortality rate [m]).
 
-The above data files (08-09) have the following structure:
+The above output files (05-06) have the following structure:
 
 | Column name | Description |   
 | ----------- | ----------- | 
