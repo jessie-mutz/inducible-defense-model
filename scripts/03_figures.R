@@ -3,8 +3,11 @@
 ## Supplemental code: Figures
 ## JM, Last updated 2024-06-05
 
+# Set working directory.
+#setwd()
+
 # Source model functions.
-source("./inducible-defense-model/01_model-functions.R")
+source("./scripts/01_model-functions.R")
 
 # Load packages.
 require(ggplot2)
@@ -35,7 +38,7 @@ theme_qual <- function() { theme_bw() + theme(
 }
 
 ## Read in simulation output for Panel A.
-qual_df <- read.csv("04_tau-theta-ep27-qual.csv")
+qual_df <- read.csv("output/01_tau-theta-ep27-qual.csv")
 qual_df$qual2 <- ifelse(is.na(qual_df$qual) == TRUE, "extinct", qual_df$qual)
 
 # Plot qualitative behavior ~ g x m, across values of tau and theta.
@@ -70,7 +73,7 @@ tau_fig <- ggplot(subset(qual_df, (ep_s == 27) &
                      labels = c('stable', 'cycles', 'extinct')) 
 
 ## Read in simulation output for Panel B.
-qual_ep_df <- read.csv("05_tau0.8-theta-ep-qual.csv")
+qual_ep_df <- read.csv("output/02_tau0.8-theta-ep-qual.csv")
 qual_ep_df$qual2 <- ifelse(is.na(qual_ep_df$qual) == TRUE, "extinct", qual_ep_df$qual)
 
 # Find minimum value of epsilon at which population persists for each parameter
@@ -105,7 +108,7 @@ ep.fig %+% subset(qual_ep_df2, theta == 2) +
                        breaks = seq(10, 20, by = 2))
 
 ## Read in simulation output for Panel C.
-qual_g_df <- read.csv("06_tau0.8-theta4-ep-g0.955-qual.csv")
+qual_g_df <- read.csv("output/03_tau0.8-theta4-ep-g0.955-qual.csv")
 qual_g_df$qual2 <- ifelse(is.na(qual_g_df$qual) == TRUE, "extinct", qual_g_df$qual)
 qual_g_df[which(qual_g_df$rep == 46), 'qual2'] <- "cycles"
 
@@ -189,7 +192,7 @@ theme_cyc <- function() { theme_bw() + theme(
 ) }
 
 ## Read in simulation output for Panel A.
-qual_r8_df <- read.csv("07_tau-theta-ep27-r8-qual.csv")
+qual_r8_df <- read.csv("output/04_tau-theta-ep27-r8-qual.csv")
 qual_r8_df$qual2 <- ifelse(is.na(qual_r8_df$qual) == TRUE, "extinct", qual_r8_df$qual)
 
 # Plot qualitative behavior ~ g x m at high inducible defense costs.
@@ -365,7 +368,7 @@ theme_quan <- function() { theme_bw() + theme(
 ) }
 
 # Read in simulation output.
-quan_df <- read.csv("08_tau-theta-ep-quan.csv")
+quan_df <- read.csv("output/05_tau-theta-ep-quan.csv")
 
 # Designate simulation runs where the system went to extinction.
 quan_df[,'test'] <- apply(quan_df[,15:24], MARGIN = 1, 
@@ -499,7 +502,7 @@ theme_uneven <- function() { theme_bw() + theme(
 ) }
 
 # Read in simulation output.
-quan_df_tau <- read.csv("09_taus-taup-theta1.5-ep30-quan.csv")
+quan_df_tau <- read.csv("output/06_taus-taup-theta1.5-ep30-quan.csv")
 
 # Select only four combinations of m and g to plot.
 quan_df_tau <- subset(quan_df_tau,
