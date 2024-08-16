@@ -3,8 +3,11 @@
 ## Supplemental code: Simulations
 ## JM, Last updated 2024-06-05
 
+# Set working directory.
+#setwd()
+
 # Source model functions.
-source("./inducible-defense-model/01_model-functions.R")
+source("./scripts/01_model-functions.R")
 
 ## Set up dataframe for combinations of plant maturation rate (g), reproductive 
 ## plant mortality (m), and per-capita plant fecundity (b) to represent plant
@@ -124,7 +127,7 @@ params <- list(
 
 ## Run simulations.=============================================================
 
-###### NOT RUN (output provided in "04_tau-theta-ep27-qual.csv"):
+###### NOT RUN (provided in "output/01_tau-theta-ep27-qual.csv"):
 ## Simulate across values of inducible defense responsiveness (tau) and inducible 
 ##  defense costs (theta) for 500 plant life history scenarios (i.e., combination 
 ##  of seedling maturation rate [g] and reproductive plant mortality rate [m]).
@@ -141,10 +144,10 @@ params <- list(
 ## Convert qualitative simulation output from large list into dataframe with 
 ## column 'rep' designating list element.
 #qual_df <- do.call(rbind.data.frame, qual_out)
-#write.csv(qual_df, file = "04_tau-theta-ep27-qual.csv", row.names = FALSE) #save dataframe as .csv
+#write.csv(qual_df, file = "output/01_tau-theta-ep27-qual.csv", row.names = FALSE) #save dataframe as .csv
 #rm(qual_out, qual_df) #remove objects from environment
 
-###### NOT RUN (output provided in "05_tau0.8-theta-ep-qual.csv"):
+###### NOT RUN (provided in "output/02_tau0.8-theta-ep-qual.csv"):
 ## Simulate across values of inducible defense costs (theta) and inducible defense 
 ##  efficacy (epsilon) for 500 plant life history scenarios (i.e., combination 
 ##  of seedling maturation rate [g] and reproductive plant mortality rate [m]).
@@ -161,10 +164,10 @@ params <- list(
 ## Convert qualitative simulation output from large list into dataframe with 
 ## column 'rep' designating list element.
 #qual_df <- do.call(rbind.data.frame, qual_out)
-#write.csv(qual_df, file = "05_tau0.8-theta-ep-qual.csv", row.names = FALSE) #save dataframe as .csv
+#write.csv(qual_df, file = "output/02_tau0.8-theta-ep-qual.csv", row.names = FALSE) #save dataframe as .csv
 #rm(qual_out, qual_df) #remove objects from environment
 
-###### NOT RUN (output provided in "06_tau0.8-theta4-ep-g0.955-qual.csv"):
+###### NOT RUN (provided in "output/03_tau0.8-theta4-ep-g0.955-qual.csv"):
 ## Simulate across values of inducible defense efficacy (epsilon) at increased 
 ##  seedling maturation rate (g = 0.955) for 500 plant life history scenarios.
 #samples$g <- 0.955 #reassign values of g to increased value (0.955)
@@ -181,10 +184,10 @@ params <- list(
 ## Convert qualitative simulation output from large list into dataframe with 
 ## column 'rep' designating list element.
 #qual_df <- do.call(rbind.data.frame, qual_out)
-#write.csv(qual_df, file = "06_tau0.8-theta4-ep-g0.955-qual.csv", row.names = FALSE) #save dataframe as .csv
+#write.csv(qual_df, file = "output/03_tau0.8-theta4-ep-g0.955-qual.csv", row.names = FALSE) #save dataframe as .csv
 #rm(qual_out, qual_df) #remove objects from environment
 
-###### NOT RUN (output provided in "07_tau-theta-ep27-r8-qual.csv"):
+###### NOT RUN (provided in "output/04_tau-theta-ep27-r8-qual.csv"):
 ## Simulate across values of inducible defense responsiveness (tau) and inducible 
 ##  defense costs (theta) at high herbivore intrinsic growth rate (r = 8) for 
 ##  500 plant life history scenarios (i.e., combination of seedling maturation 
@@ -203,7 +206,7 @@ params <- list(
 ## Convert qualitative simulation output from large list into dataframe with 
 ## column 'rep' designating list element.
 #qual_df <- do.call(rbind.data.frame, qual_out)
-#write.csv(qual_df, file = "07_tau-theta-ep27-r8-qual.csv", row.names = FALSE) #save dataframe as .csv
+#write.csv(qual_df, file = "output/04_tau-theta-ep27-r8-qual.csv", row.names = FALSE) #save dataframe as .csv
 #rm(qual_out, qual_df) #remove objects from environment
 
 ## For quantitative simulations, use nine representative combinations of seedling
@@ -216,7 +219,7 @@ samples <- data.frame(expand.grid(
 # Use 'b_func' to assign b values for each sampled set of m and g values.
 samples$b <- b_func(g = samples$g, m = samples$m)
 
-###### NOT RUN (output provided in "08_tau-theta-ep-quan.csv"):
+###### NOT RUN (provided in "output/05_tau-theta-ep-quan.csv"):
 ## Simulate across values of inducible defense responsiveness (tau), inducible 
 ##  defense costs (theta), and inducible defense efficacy (epsilon) for 9 
 ##  representative plant life history scenarios (i.e., combination of seedling 
@@ -234,10 +237,10 @@ samples$b <- b_func(g = samples$g, m = samples$m)
 ## Convert quantitative simulation output from large list into dataframe with 
 ## column 'rep' designating list element.
 #quan_df <- do.call(rbind.data.frame, quan_out)
-#write.csv(quan_df, file = "08_tau-theta-ep-quan.csv", row.names = FALSE) #save dataframe as .csv
+#write.csv(quan_df, file = "output/05_tau-theta-ep-quan.csv", row.names = FALSE) #save dataframe as .csv
 #rm(quan_out, quan_df) #remove objects from environment
 
-###### NOT RUN (output provided in "09_taus-taup-theta1.5-ep-quan.csv"):
+###### NOT RUN (provided in "output/06_taus-taup-theta1.5-ep-quan.csv"):
 ## Simulate across values of inducible defense responsiveness of seedlings (tau_s) 
 ##  and reproductive plants (tau_p) for 4 representative plant life history scenarios 
 ##  (i.e., combination of seedling maturation rate [g] and reproductive plant 
@@ -255,5 +258,5 @@ samples$b <- b_func(g = samples$g, m = samples$m)
 ## column 'rep' designating list element.
 #quan_df <- do.call(rbind.data.frame, quan_out)
 #quan_df <- subset(quan_df, timestep == 100)
-#write.csv(quan_df, file = "09_taus-taup-theta1.5-ep30-quan.csv", row.names = FALSE) #save dataframe as .csv
+#write.csv(quan_df, file = "output/06_taus-taup-theta1.5-ep30-quan.csv", row.names = FALSE) #save dataframe as .csv
 #rm(quan_out, quan_df) #remove objects from environment
