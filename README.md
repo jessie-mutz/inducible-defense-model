@@ -78,4 +78,4 @@ The above output files (05-06) have the following structure:
 | seeds | no. seeds produced by reproductive plants at timestep t |
 
 ## SOFTWARE VERSIONS
-Model simulations were run and figures produced in R v4.3.1 with the following package versions: deSolve v1.36, parallel v4.3.1, reshape2 v1.4.4, ggplot2 v3.4.2, gridExtra v2.3, ggtext v0.1.2, metR v0.14.0, doBy v4.6.17.
+Model simulations were run and figures produced in R v4.3.1 with the following package versions: deSolve v1.36, parallel v4.3.1, reshape2 v1.4.4, ggplot2 v3.4.2, gridExtra v2.3, metR v0.14.0, doBy v4.6.17.
