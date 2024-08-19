@@ -12,7 +12,6 @@ source("./scripts/01_model-functions.R")
 # Load packages.
 require(ggplot2)
 require(gridExtra)
-require(ggtext)
 require(doBy)
 require(reshape2)
 
@@ -33,7 +32,7 @@ theme_qual <- function() { theme_bw() + theme(
   axis.line = element_line(),
   strip.background = element_blank(),
   axis.text = element_text(size = 11),
-  plot.title = ggtext::element_markdown(size = 12)
+  plot.title = element_text(size = 12)
 )
 }
 
@@ -91,21 +90,15 @@ ep.fig <- ggplot(subset(qual_ep_df2, (theta == 4)),
   theme(
     plot.margin = margin(5,15,5,5),
     strip.text = element_text(hjust = 0),
-    legend.title = ggtext::element_markdown(size = 8),
+    legend.title = element_text(size = 8),
     legend.text = element_text(size = 8),
     legend.margin = margin(0,0,0,0)
   ) +
   labs(x = "Seedling maturation\nrate (g)",
-       y = "Reproductive plant\nmortality rate (m)",
-       color = "Induced defense<br>effectiveness (&epsilon;)", 
-       tag = "A.") +
+       y = "Reproductive plant\nmortality rate (m)", tag = "A.") +
   scale_x_continuous(limits = c(0,1), expand = c(0,0)) +
   scale_y_continuous(limits = c(0,1), expand = c(0,0)) +
   scale_color_gradient(low = "white", high = "black", limits = c(20,40))
-
-ep.fig %+% subset(qual_ep_df2, theta == 2) +
-  scale_color_gradient(low = "white", high = "paleturquoise4", limits = c(10,20),
-                       breaks = seq(10, 20, by = 2))
 
 ## Read in simulation output for Panel C.
 qual_g_df <- read.csv("output/03_tau0.8-theta4-ep-g0.955-qual.csv")
@@ -147,18 +140,22 @@ g.fig <- ggplot(data = qual_g_df,
                                 "None",
                                 "Destabilizing\n(cycles to extinct)"))
 
+color.title <- list( bquote( paste( "Threshold ", epsilon))
+)
+
 ## Combine panels.
 Fig1 <- grid.arrange(
   tau_fig +
     labs(color = "", shape = "", tag = "A."),
   grid.arrange(
     ep.fig +   
-      labs(color = "Threshold<br>inducible defense<br>effectiveness (&epsilon;)", 
-           tag = "B.", title = "&theta; = 4"),
+      labs(#color = "Threshold<br>inducible defense<br>effectiveness (&epsilon;)", 
+        color = do.call(expression, color.title),   
+        tag = "B.", title = expression(theta == 4)),
     g.fig +  
       labs(color = "Effect of increased g\non equilibrium behavior",
            shape = "Effect of increased g\non equilibrium behavior",
-           title = "&theta; = 4", tag = "C."),
+           title = expression(theta == 4), tag = "C."),
     nrow = 1, widths = c(1, 0.8)
   ),
   nrow = 2, heights = c(1, 0.75))
@@ -181,7 +178,6 @@ theme_cyc <- function() { theme_bw() + theme(
   axis.line = element_line(),
   axis.text = element_text(size = 11, color = "black"),
   axis.title = element_text(size = 12),
-  plot.title = element_markdown(size = 12.5),
   plot.margin = margin(10,10,10,0),
   legend.position = "top",
   legend.margin = margin(0,0,0,0),
@@ -357,11 +353,10 @@ Fig2 <- grid.arrange(
 # Set theme for figures.
 theme_quan <- function() { theme_bw() + theme(
   panel.grid = element_blank(),
-  axis.text = element_text(size = 14, color = "black"),
-  axis.title.y = element_text(size = 16, family = "serif"),
-  axis.title.x = ggtext::element_markdown(size = 16, family = "serif"),
-  plot.title = element_markdown(size = 12.5),
-  plot.margin = margin(3,15,3,3),
+  axis.text = element_text(size = 12.5, color = "black"),
+  axis.title = element_text(size = 14, family = "serif"),
+  plot.title = element_text(size = 11.5),
+  plot.margin = margin(3,15,0,3),
   panel.border = element_blank(), 
   axis.line = element_line(),
   legend.position = "none"
@@ -386,6 +381,20 @@ quan_df_melt <- melt(data = quan_df,
 
 rm(quan_df) # remove unmelted df -- very big and no longer needed
 
+heads <- list ( bquote( paste( bold('A. '), 'Seedling biomass')),
+                bquote( paste( bold('B. '), 'Mature plant biomass')),
+                bquote( paste( bold('C. '), 'Herbivore pop. size')),
+                bquote( paste( bold('D. '), 'Seed production')),
+                bquote( paste( bold('E. '), 'Seedling induction')),
+                bquote( paste( bold('F. '), 'Mature plant induction')),
+                bquote( paste( bold('G. '), 'Herbivore density')),
+                bquote( paste( bold('H. '), 'Prop. mature')),
+                bquote( paste( bold('I. '), 'Seedling biomass')),
+                bquote( paste( bold('J. '), 'Mature plant biomass')),
+                bquote( paste( bold('K. '), 'Herbivore pop. size')),
+                bquote( paste( bold('L. '), 'Seed production'))
+)
+
 # Set up environment for plotting equilibrium as a function of tau, with lines
 #  for each combination of m and g values.
 quan_fig1 <- ggplot( ) +
@@ -393,8 +402,8 @@ quan_fig1 <- ggplot( ) +
   theme_quan() + 
   labs(x = "", 
        y = expression(paste( hat(S) )), 
-       title = "<b>A.</b> Seedling biomass")+
-  scale_x_continuous(expand = c(0,0), breaks = seq(0, 1, by = 0.5)) +
+       title = do.call(expression, heads[1]))+
+  scale_x_continuous(expand = c(0,0), breaks = seq(0, 1, by = 0.5), limits = c(0,1)) +
   scale_y_continuous(expand = c(0,0), limits = c(0,5)) +
   scale_color_manual(values = c("gray", "black")) +
   scale_linetype_manual(values = c("solid", "dashed")) 
@@ -413,37 +422,33 @@ quan_base <- grid.arrange(
   quan_fig1 %+% subset(quan_df_melt, variable == "P" & theta == 2 & ep_s == 30) +
     scale_y_continuous(expand = c(0,0), limits = c(0,1), breaks = c(0,0.5,1))+
     labs(y = expression(paste( hat(P) )), 
-         title = "<b>B.</b> Mature plant biomass"),
+         title = do.call(expression, heads[2])),
   quan_fig1 %+% subset(quan_df_melt, variable == "H" & theta == 2 & ep_s == 30) +
     labs(y = expression(paste( hat(H) )), 
-         title = "<b>C.</b> Herbivore pop. size" ) +
+         title = do.call(expression, heads[3]) ) +
     scale_y_continuous(expand = c(0,0), limits = c(0,14)),
   quan_fig1 %+% subset(quan_df_melt, variable == "seeds" & theta == 2 & ep_s == 30) +
     labs(y = expression(paste("b", hat(P), "(1 - ", theta, hat(bar(I))[P],")")), 
-         title = "<b>D.</b> Seed production" ) +
+         title = do.call(expression, heads[4]) ) +
     scale_y_continuous(expand = c(0,0), limits = c(0,7)),
   nrow = 1)
 
 # Plotting for increased theta.
 quan_theta <- grid.arrange( 
   quan_fig1 %+% subset(quan_df_melt, variable == "S" & theta == 4 & ep_s == 30) +
-    labs(x = "Induction<br>responsiveness&nbsp;(&tau;)",
-         y = expression(paste( hat(S) )), 
-         title = "<b>I.</b> Seedling biomass"), 
+    labs(y = expression(paste( hat(S) )), 
+         title = do.call(expression, heads[9])), 
   quan_fig1 %+% subset(quan_df_melt, variable == "P" & theta == 4 & ep_s == 30) +
     scale_y_continuous(expand = c(0,0), limits = c(0,1), breaks = c(0,0.5,1))+
-    labs(x = "Induction<br>responsiveness&nbsp;(&tau;)",
-         y = expression(paste( hat(P) )), 
-         title = "<b>J.</b> Mature plant biomass"),
+    labs(y = expression(paste( hat(P) )), 
+         title = do.call(expression, heads[10])),
   quan_fig1 %+% subset(quan_df_melt, variable == "H" & theta == 4 & ep_s == 30) +
-    labs(x = "Induction<br>responsiveness&nbsp;(&tau;)",
-         y = expression(paste( hat(H) )), 
-         title = "<b>K.</b> Herbivore pop. size" ) +
+    labs(y = expression(paste( hat(H) )), 
+         title = do.call(expression, heads[11]) ) +
     scale_y_continuous(expand = c(0,0), limits = c(0,14)),
   quan_fig1 %+% subset(quan_df_melt, variable == "seeds" & theta == 4 & ep_s == 30) +
-    labs(x = "Induction<br>responsiveness&nbsp;(&tau;)",
-         y = expression(paste("b", hat(P), "(1 - ", theta, hat(bar(I))[P],")")), 
-         title = "<b>L.</b> Seed production" ) +
+    labs(y = expression(paste("b", hat(P), "(1 - ", theta, hat(bar(I))[P],")")), 
+         title = do.call(expression, heads[12]) ) +
     scale_y_continuous(expand = c(0,0), limits = c(0,7)),
   nrow = 1)
 
@@ -451,41 +456,43 @@ quan_theta <- grid.arrange(
 quan_both <- grid.arrange(
   quan_fig1 %+% subset(quan_df_melt, variable == "i_s_mean" & theta == 2 & ep_s == 30) +
     labs(y = expression(paste( hat(bar(I))[S] )), 
-         title = "<b>E.</b> Seedling induction" )+
+         title = do.call(expression, heads[5]) )+
     scale_y_continuous(expand = c(0,0), limits = c(-1e-4,0.25), breaks = seq(0,0.2,by = 0.1)),
   quan_fig1 %+% subset(quan_df_melt, variable == "i_p_mean" & theta == 2 & ep_s == 30) +
     labs(y = expression(paste( hat(bar(I))[P] )), 
-         title = "<b>F.</b> Mature plant induction" )+
+         title = do.call(expression, heads[6]) )+
     scale_y_continuous(expand = c(0,0), limits = c(-1e-4,0.25), breaks = seq(0,0.2,by = 0.1)),
   quan_fig1 %+% subset(quan_df_melt, variable == "H_SP" & theta == 2 & ep_s == 30) +
     labs(y = expression(paste(hat(H), (hat(S) + hat(P))^-1)), 
-         title = "<b>G.</b> Herbivore density" )+
+         title = do.call(expression, heads[7]))+
     scale_y_continuous(expand = c(0,0), limits = c(0,6), breaks = seq(0,6,by=2)),
   quan_fig1 %+% subset(quan_df_melt, variable == "P.prop" & theta == 2 & ep_s == 30) +
     labs(y = expression(paste(hat(P), (hat(S) + hat(P))^-1)), 
-         title = "<b>H.</b> Prop. mature" )+
+         title = do.call(expression, heads[8]) )+
     scale_y_continuous(expand = c(0,0), limits = c(0,1),breaks = c(0,0.5,1)),
   nrow = 1)
 
-# Panel row labels.
-lab_base <- ggplot() +
-  annotate("text", x = 0, y = 0, label = "Baseline", 
-           size = 5.5, hjust = 0, family = "sans") +
-  theme_void() +
-  theme( plot.margin = margin(0,0,0,-750) )
-
-lab_theta <- ggplot() +
-  annotate("text", x = 0, y = 0, 
-           label = expression(paste("Increased reproduction-defense tradeoff (", theta, " = 4)")), 
-           parse = TRUE, size = 5.5, hjust = 0, family = "sans") +
-  theme_void() +
-  theme( plot.margin = margin(0,0,0,-750) )
-
-Fig3 <- grid.arrange(lab_base, quan_base, 
-                     quan_both,
-                     lab_theta, quan_theta,
-                     nrow = 5, heights = c(0.15,1,1,0.15,1.2))
-
+Fig3 <- grid.arrange(
+  # 'Baseline' header for first two rows of panels
+  ggplot() +
+    labs(title = "Baseline") +
+    theme_void() +
+    theme(plot.margin = margin(5,5,5,5), plot.title = element_text(size = 14)),
+  quan_base, # first row of panels
+  quan_both, # second row of panels
+  # 'Increased theta' header for third row of panels
+  ggplot() +
+    labs(title = expression(paste("Increased reproduction-defense tradeoff (", theta, " = 4)"))) +
+    theme_void() +
+    theme(plot.margin = margin(5,5,5,5), plot.title = element_text(size = 14)),
+  quan_theta, # third row of panels
+  # x axis label
+  ggplot() +
+    labs(title = expression(paste("Induction responsiveness (", tau, ")"))) +
+    theme_void() +
+    theme(plot.margin = margin(-5,5,5,5),
+    plot.title = element_text(family = "serif", hjust = 0.5, size = 16)),
+  nrow = 6, heights = c(0.15,1,1,0.15,1, 0.15))
 
 ## Figure 4. ===================================================================
 ## H/(S+P) ~ tau_s x tau_p for four combinations of m & g.
@@ -494,8 +501,7 @@ Fig3 <- grid.arrange(lab_base, quan_base,
 theme_uneven <- function() { theme_bw() + theme(
   panel.grid = element_blank(),
   axis.text = element_text(size = 12, color = "black"),
-  axis.title = element_markdown(size = 14, family = "serif"),
-  plot.title = element_markdown(size = 12.5),
+  axis.title = element_text(size = 14, family = "serif"),
   plot.margin = margin(0,10,3,3),
   legend.position = "none",
   panel.spacing = unit(0.5, "lines")
@@ -520,9 +526,14 @@ quan_df_tau$type.lab <- factor(quan_df_tau$type,
                         )
 )
 
+# Summarize mean density across timesteps
+quan_df_tau1 <- doBy::summaryBy(S + P + i_s_mean + i_p_mean + H_SP + H ~
+                                  tau_s + tau_p + type, id = ~type.lab,
+                                data = quan_df_tau, FUN = mean, args = c(na.rm = T))
+
 # Plot Fig. 4.
-Fig4 <- ggplot(data = quan_df_tau, 
-                 aes(x = tau_s, y = tau_p, z = H_SP, fill = H_SP)) +
+Fig4 <- ggplot(data = quan_df_tau1, 
+                 aes(x = tau_s, y = tau_p, z = H_SP.mean, fill = H_SP.mean)) +
   geom_raster(interpolate = TRUE) +
   geom_contour(aes(color = after_stat(level)), size = 0.4) +
   metR::geom_text_contour(size = 3, skip = 1, stroke = 0.01,
@@ -531,8 +542,10 @@ Fig4 <- ggplot(data = quan_df_tau,
     strip.background = element_blank(),
     strip.text = element_text(size = 10.5, hjust = 0)
   ) +
-  labs(x = "Seedling induction<br>responsiveness&nbsp;(&tau;<sub>S</sub>)", 
-       y = "Mature plant induction<br>responsiveness&nbsp;(&tau;<sub>P</sub>)", title = "") +
+  labs(
+    x = expression(paste("Seedling induction responsiveness (", tau[S], ")")),
+    y = expression(paste("Mature plant induction responsiveness (", tau[P], ")")), 
+    title = "") +
   scale_y_continuous(expand = c(0,0), breaks = c(0, 0.5, 1), labels = c('0', '0.5', '1')) +
   scale_x_continuous(expand = c(0,0), breaks = c(0, 0.5, 1), labels = c('0', '0.5', '1')) +
   scale_fill_gradient(high = "blue3", low = "gray95", guide = "none")+
